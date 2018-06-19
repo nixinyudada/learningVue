@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue 模板</title>
+    <script src="https://cdn.bootcss.com/vue/2.5.11/vue.js"></script>
+</head>
+<body>
+<div id="app">
+{{message}}
+</div>
+
+<template id="tem">
+    <div>
+        <h1>{{message}}</h1>
+        <span>123</span>
+    </div>
+</template>
+<script>
+var v = new Vue({
+    el:'#app',
+    data:{
+        message:'Hello,world!'
+    },
+    template:"#tem"
+});
+</script>
+</body>
+</html>

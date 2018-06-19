@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue 兄弟组件之间的数据通信传输</title>
+    <script src="https://cdn.bootcss.com/vue/2.5.11/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <b>{{count}}</b>
+    <br>
+    <my-button :count="count"></my-button>
+    <my-remove :count="count"></my-remove>
+</div>
+
+
+<script>
+
+    var busVm = new Vue();
+
+    var vm = new Vue({
+        el:'#app',
+        data:{
+            count:0
+        },
+        mounted:function(){
+            busVm.$on('changeEvent',function(num){
+                this.count = num;
+            }.bind(this));
+        },
+        components:{
+            'my-button':{
+                template:'<button v-on:click="setContent">+</button>',
+                props:['count'],
+                methods:{
+                    setContent:function(){
+                        console.log(this.count);
+                        busVm.$emit('changeEvent',this.count+1);
+                    }
+                }
+            },
+            'my-remove':{
+                template:'<button v-on:click="setContent">-</button>',
+                props:['count'],
+                methods:{
+                    setContent:function(){
+                        busVm.$emit('changeEvent',this.count-1);
+                    }
+                }
+            }
+        }
+
+    });
+</script>
+</body>
+</html>

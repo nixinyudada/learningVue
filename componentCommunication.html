@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue 父子组件通信</title>
+    <script src="https://cdn.bootcss.com/vue/2.5.11/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <my-header :list="list"></my-header>
+</div>
+
+
+<script>
+    var v = new Vue({
+        el:'#app',
+        data:{
+            message:'Hello,world!I am nixinyu.',
+            list:['one','two','three']
+        },
+        components:{
+            'my-header':{
+                template:`
+                    <div>
+                        <h1>{{message}}</h1>
+                    <ul>
+                        <li v-for="item in list">{{item}}</li>
+                    </ul>
+                    <my-nav :message="message"></my-nav>
+                    </div>
+                `,
+                data:function(){
+                    return {
+                        message:'Hello my header!!!'
+                    }
+                },
+                props:['list'],  // 父组件向子组件进行通信操作
+                components:{
+                    'my-nav':{
+                        template:`
+                            <div>
+                                <ul>
+                                    <li v-for="item in list">{{item}}</li>
+                                </ul>
+                                <h2>{{message}}</h2>
+                            </div>
+                        `,
+                        props:{
+                            'list':{
+                                type:Array,
+                                default:function (){
+                                    return ['1','2','3'];
+                                }
+                            },
+                            'message':{
+                                type:String,
+                                default:'Hello,world!'
+                            }
+                        },  // 父组件向子组件进行通信操作
+                    }
+                }
+            },
+        }
+    });
+</script>
+</body>
+</html>

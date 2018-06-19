@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue 组件</title>
+    <script src="https://cdn.bootcss.com/vue/2.5.11/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <my-header></my-header>
+    <my-header></my-header>
+</div>
+
+<div id="ex">
+{{message}}
+</div>
+
+<!--
+<div id="app2">
+    <my-header></my-header>
+</div>-->
+
+<script>
+    /*Vue.component('my-header',{
+        template:"<h1>全局组件</h1>"
+    });*/
+
+    var vm = new Vue({
+        el:'#app',
+        data:{
+            message:'Hello my header!!'
+        },
+        components:{
+            'my-header':{
+                template:'<h1 v-on:click="changeCount">{{count}}</h1>',
+                data:function(){
+                    return {
+                        message:'Hello my header!!!',
+                        count:0
+                    };
+                },
+                methods:{
+                    changeCount:function(){
+                        this.count++;
+                    }
+                }
+            }
+        }
+    });
+
+
+
+    var myComponent = Vue.extend({
+        data:function(){
+            return {
+                message:'Holle vue!'
+            }
+        }
+    });
+
+    var vm2 = new myComponent({
+        el:'#ex'
+    });
+
+
+
+
+    /*var vm = new Vue({
+        el:'#app2'
+    });*/
+</script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue 子组件向父组件进行通信</title>
+    <script src="https://cdn.bootcss.com/vue/2.5.11/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <my-header></my-header>
+</div>
+
+
+<script>
+    var v = new Vue({
+        el:'#app',
+        data:{
+            message:'Hello,world!I am nixinyu.',
+            list:['one','two','three']
+        },
+        components:{
+            'my-header': {
+                template: `
+                    <div>
+                        <h1 ref="my_title">{{nowMessage}}</h1>
+                    <ul>
+                        <li v-for="item in list">{{item}}</li>
+                    </ul>
+                    <my-nav v-on:changeEvents="getChildContent" :list="list"></my-nav>
+                    </div>
+                `,
+                data:function(){
+                    return {
+                        nowMessage:this.message
+                    }
+                },
+                methods:{
+                    getChildContent:function(str){
+                        //console.log(str);
+                        //this.nowMessage = str;  // 数据操作
+                        this.$refs.my_title.innerHTML = str;  // DOM操作
+                    }
+                },
+                props:{
+                    'list':{
+                        type:Array,
+                        default:function(){
+                            return [1,2,3,4]
+                        }
+                    },
+                    'message':{
+                        type:String,
+                        default:"I am nixinyu,I like Vue.js!"
+                    }
+                },  // 父组件向子组件进行通信操作
+                components:{
+                    'my-nav':{
+                        template:`
+                               <ul>
+                                    <li v-on:click="getContent" v-for="item in list">{{item}}</li>
+                               </ul>
+                        `,
+                        props:['list'],
+                        methods:{
+                            getContent:function(ev){
+                                //console.log(ev.target.innerHTML);
+                                this.$emit('changeEvents',ev.target.innerHTML);
+                            }
+                        }
+                    }
+                }
+                },
+
+            },
+    });
+</script>
+</body>
+</html>
